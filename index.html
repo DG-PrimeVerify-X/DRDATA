@@ -144,7 +144,7 @@ body:before{
 
 </style>
 
-<!-- Meta Pixel: replace YOUR_PIXEL_ID with your real Pixel ID.
+<!-- Meta Pixel: replace 29223361420597897 with your real Pixel ID.
      No automatic PageView is fired here. Conversion events are triggered manually. -->
 <script>
 !function(f,b,e,v,n,t,s){
@@ -156,6 +156,7 @@ s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
 }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
 
 fbq('init','29223361420597897');
+fbq('track','PageView');
 // Intentionally NO automatic PageView or Subscribe event.
 </script>
 
@@ -186,7 +187,7 @@ fbq('init','29223361420597897');
 
   <div class="actions">
    <a class="btn primary" href="https://www.yaarwin15.com/#/register?invitationCode=135535568574" id="registerBtn" aria-label="Register Now">REGISTER NOW <span>→</span></a>
-   <a class="btn secondary loginBtn" href="yaarwin.apk" download aria-label="Download APK">📲 DOWNLOAD APK</a>
+   <a class="btn secondary loginBtn" href="yaarwin.apk" download aria-label="Download APK" id="downloadBtn">📲 DOWNLOAD APK</a>
   </div>
 
   <div class="quick">
@@ -230,17 +231,26 @@ fbq('init','29223361420597897');
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const registerBtn = document.getElementById('registerBtn');
-  let subscribeSent = false;
+  const downloadBtn = document.getElementById('downloadBtn');
+  let registerEventSent = false;
+  let downloadEventSent = false;
 
   if (registerBtn) {
     registerBtn.addEventListener('click', function () {
-      // Manual conversion only: never fires on page load, refresh, APK download, or login.
-      // Guard prevents duplicate Subscribe events from repeated/double clicks.
-      if (subscribeSent) return;
-
+      if (registerEventSent) return;
       if (typeof fbq === 'function') {
-        subscribeSent = true;
-        fbq('track', 'Subscribe');
+        registerEventSent = true;
+        fbq('trackCustom', 'RegisterNow');
+      }
+    }, {passive: true});
+  }
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function () {
+      if (downloadEventSent) return;
+      if (typeof fbq === 'function') {
+        downloadEventSent = true;
+        fbq('trackCustom', 'DownloadAPK');
       }
     }, {passive: true});
   }
